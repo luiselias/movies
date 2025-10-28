@@ -1,0 +1,9 @@
+{
+  "name": "movies",
+  "version": "0.0.1",
+  "description": "Serviço de informações para filmes",
+  "main": "index.js",
+  "repository": "https://github.com/luiselias/movies.git",
+  "author": "Luis Carlos Elias <luis.elias@digitro.com>",
+  "license": "MIT"
+}

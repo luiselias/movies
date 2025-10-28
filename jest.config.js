@@ -1,8 +1,14 @@
-module.exports = {
-  preset: 'ts-jest',
+export default {
+  preset: 'ts-jest/presets/default-esm',
+  extensionsToTreatAsEsm: ['.ts'],
+  transform: {
+    '^.+\\.(ts|tsx)$': ['ts-jest', {
+      useESM: true
+    }]
+  },
   testEnvironment: 'node',
   coverageDirectory: 'coverage',
-  collectCoverageFrom: ['src/**/*.ts'],
+  collectCoverageFrom: ['**/*.ts'],
   coverageThreshold: {
     global: {
       branches: 80,
@@ -11,5 +17,8 @@ module.exports = {
       statements: 80
     }
   },
-  modulePathIgnorePatterns: ['<rootDir>/dist/']
+  modulePathIgnorePatterns: ['<rootDir>/dist/'],
+  moduleNameMapper: {
+    '^(\\.{1,2}/.*)\\.js$': '$1'
+  }
 };

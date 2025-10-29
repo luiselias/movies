@@ -8,3 +8,18 @@ export interface Movie {
 	producers: string;
 	winner: boolean;
 }
+
+export interface WinnersYearRange {
+	min: {
+		producer: string;
+		interval: number;
+		previousWin: number;
+		followingWin: number;
+	}[];
+	max: {
+		producer: string;
+		interval: number;
+		previousWin: number;
+		followingWin: number;
+	}[];
+}

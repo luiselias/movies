@@ -1,10 +1,12 @@
+import type { Movie } from '../../../types/index';
+
 import { Request, Response } from 'express';
 
-import { Movie } from '../../../types/index';
+const MoviesService = require('../../../service/movies/index.js');
+const moviesService = new MoviesService.MovieServiceImpl();
 
-const movies: Movie[] = [];
-
-export const getAllMovies = (req: Request, res: Response): void => {
+export const getAllMovies = async (req: Request, res: Response): Promise<void> => {
+	const movies: Movie[] = await moviesService.getAllMovies();
 	res.status(200).json({
 		success: true,
 		data: movies,
@@ -12,8 +14,8 @@ export const getAllMovies = (req: Request, res: Response): void => {
 	});
 };
 
-const getWinnersYear = (req: Request, res: Response): void => {
-	const winners = movies;
+const getWinnersYear = async (req: Request, res: Response): Promise<void> => {
+	const winners = await moviesService.getWinnersYear();
 	res.status(200).json({
 		success: true,
 		data: winners,
@@ -21,37 +23,9 @@ const getWinnersYear = (req: Request, res: Response): void => {
 	});
 };
 
-const getWinnersYearRange = (req: Request, res: Response): void => {
-	res.status(200).json({
-		"min": [
-			{
-				"producer": "Producer 1",
-				"interval": 1,
-				"previousWin": 2008,
-				"followingWin": 2009
-			},
-			{
-				"producer": "Producer 2",
-				"interval": 1,
-				"previousWin": 2018,
-				"followingWin": 2019
-			}
-		],
-		"max": [
-			{
-				"producer": "Producer 1",
-				"interval": 99,
-				"previousWin": 1900,
-				"followingWin": 1999
-			},
-			{
-				"producer": "Producer 2",
-				"interval": 99,
-				"previousWin": 2000,
-				"followingWin": 2099
-			}
-		]
-	});
+const getWinnersYearRange = async (req: Request, res: Response): Promise<void> => {
+	const range = await moviesService.getWinnersYearRange();
+	res.status(200).json(range);
 };
 
 export default { getAllMovies, getWinnersYear, getWinnersYearRange };

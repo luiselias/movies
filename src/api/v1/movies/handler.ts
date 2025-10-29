@@ -2,8 +2,8 @@ import type { Movie } from '../../../types/index';
 
 import { Request, Response } from 'express';
 
-const MoviesService = require('../../../service/movies/index.js');
-const moviesService = new MoviesService.MovieServiceImpl();
+import MoviesService from '../../../service/movies/index';
+const moviesService = new MoviesService();
 
 export const getAllMovies = async (req: Request, res: Response): Promise<void> => {
 	const movies: Movie[] = await moviesService.getAllMovies();

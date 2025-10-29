@@ -43,4 +43,4 @@ class MovieServiceImpl implements MovieService {
         };
     }
 }
-export { MovieServiceImpl };
+export default MovieServiceImpl;

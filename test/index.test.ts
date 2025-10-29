@@ -18,12 +18,14 @@ describe('Aplicação', () => {
 	afterAll(() => {
 		resetScenario();
 	});
-	it('deve retornar resposta da rota raiz', async () => {
-		const response = await request(app).get('/');
+	it('deve retornar a lista de filmes', async () => {
+		const response = await request(app).get('/api/v1/movies');
 
 		expect(response.status).toBe(200);
 		expect(response.body).toEqual({
-			message: 'Servidor inicializado!'
+			count: 0,
+			data: [],
+			success: true
 		});
 	});
 });

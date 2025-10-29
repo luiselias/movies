@@ -5,3 +5,9 @@ export interface MovieService {
     getWinnersYear(): Promise<Movie[]>;
     getWinnersYearRange(): Promise<WinnersYearRange>;
 }
+
+export interface MoviePersistence {
+    getAllMovies(): Promise<Movie[]>;
+    getWinnersYear(): Promise<Movie[]>;
+    getWinnersYearRange(): Promise<WinnersYearRange>;
+}

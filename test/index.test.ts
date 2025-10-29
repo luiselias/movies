@@ -1,5 +1,5 @@
 import request from 'supertest';
-import app from '../index';
+import app, {closeServer} from '../index';
 
 describe('Aplicação de filmes', () => {
 	const resetScenario = () => {
@@ -17,6 +17,7 @@ describe('Aplicação de filmes', () => {
 
 	afterAll(() => {
 		resetScenario();
+		closeServer();
 	});
 
 	it('deve retornar a lista de filmes', async () => {
@@ -74,6 +75,17 @@ describe('Aplicação de filmes', () => {
 					"followingWin": 2099
 				}
 			]
+		});
+	});
+
+	it('deve retornar o error 404 se acessar uma rota inexistente', async () => {
+		const response = await request(app).get('/api/v1/movies/unknown-route');
+
+		expect(response.status).toBe(404);
+		expect(response.body).toEqual({
+			success: false,
+			path: '/api/v1/movies/unknown-route',
+			message: 'Rota não encontrada'
 		});
 	});
 });

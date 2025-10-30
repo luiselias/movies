@@ -43,7 +43,7 @@ Listar filmes vencedores por ano:
 curl "http://localhost:8901/api/v1/movies/winners"
 ```
 
-Listar filmes vencedores em um intervalo de anos:
+Listar produtores que ganharam o prêmios mais de uma vez em um intervalo de anos:
 ```bash
 curl "http://localhost:8901/api/v1/movies/winners/range"
 ```

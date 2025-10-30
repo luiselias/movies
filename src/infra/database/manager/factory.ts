@@ -16,8 +16,8 @@ class DatabaseManagerFactory {
                 case 'memoryDB':
                     DatabaseManagerFactory.instance = new MemoryDB();
                     break;
-                default:
-                    throw new Error(`Database type ${typeDB} not supported.`);
+                //TODO: implemetação de outros tipos de DB, como só tem um nem faz sentido
+                //lançar erro no default
             }
         }
 

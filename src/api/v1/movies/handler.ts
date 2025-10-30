@@ -15,20 +15,12 @@ export const getAllMovies = async (req: Request, res: Response): Promise<void> =
 };
 
 const getWinnersYear = async (req: Request, res: Response): Promise<void> => {
-	try {
-		const winners = await moviesService.getWinnersYear();
-		res.status(200).json({
-			success: true,
-			data: winners,
-			count: winners.length
-		});
-	} catch (error) {
-		console.error('Erro ao obter filmes ganhadores:', error);
-		res.status(500).json({
-			success: false,
-			message: 'Erro interno do servidor ao obter filmes ganhadores.'
-		});
-	}
+	const winners = await moviesService.getWinnersYear();
+	res.status(200).json({
+		success: true,
+		data: winners,
+		count: winners.length
+	});
 };
 
 const getWinnersYearRange = async (req: Request, res: Response): Promise<void> => {

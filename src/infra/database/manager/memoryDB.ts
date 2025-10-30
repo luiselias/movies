@@ -23,11 +23,9 @@ class MemoryDB implements DatabaseManager {
         const lines = csv.split('\n');
         const columns = lines[0].split(';');
 
-        const createTableQuery = `CREATE TABLE movies (${columns.map((col: string) =>
-            `${col.trim()} TEXT`).join(', ')})`;
+        const createTableQuery = `CREATE TABLE movies (${columns.map((col: string) => `${col.trim()} TEXT`).join(', ')})`;
 
         this.dbClient.exec(createTableQuery);
-
 
         const insertQuery = `INSERT INTO movies (${columns.map((col: string) =>
             col.trim()).join(', ')}) VALUES (${columns.map(() => '?').join(', ')});`;
@@ -42,10 +40,6 @@ class MemoryDB implements DatabaseManager {
         }
 
         MemoryDB.isLoaded = true;
-
-        const countQuery = `SELECT COUNT(*) as count FROM movies;`;
-        const row = this.dbClient.prepare(countQuery).get() as { count: number };
-        console.log(`Loaded ${row.count} records into MemoryDB`);
     }
 
     async connect(): Promise<void> {
@@ -58,7 +52,7 @@ class MemoryDB implements DatabaseManager {
 
     getDbClient(): Database {
         if (!MemoryDB.isLoaded) {
-            throw new Error('Database not loaded. Call connect() first.');
+            throw new Error('O dados não foram carregados.');
         }
         return this.dbClient;
     }

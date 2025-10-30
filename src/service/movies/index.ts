@@ -67,7 +67,7 @@ class MovieServiceImpl implements MovieService {
     }
 
     private makeResultWinnersYearRange(winnersSortedByInterval: [string, ProducerEntry][]): WinnersYearRange {
-         const winnersFinal = winnersSortedByInterval.map(entry => ({
+        const winnersFinal = winnersSortedByInterval.map(entry => ({
             producer: entry[0],
             interval: entry[1].interval!,
             previousWin: entry[1].data[0].year,
@@ -75,29 +75,15 @@ class MovieServiceImpl implements MovieService {
         }));
 
         const result: WinnersYearRange = { min: [], max: [] };
-        switch (winnersFinal.length) {
-            case 0:
-                return result;
-            case 1:
-                result.min.push(winnersFinal[0]);
-                result.max.push(winnersFinal[0]);
-                return result;
-            case 2:
-                result.min.push(winnersFinal[0]);
-                result.max.push(winnersFinal[1]);
-                return result;
-            case 3:
-                result.min.push(winnersFinal[0]);
-                result.min.push(winnersFinal[1]);
-                result.max.push(winnersFinal[2]);
-                return result;
-            default:
-                result.min.push(winnersFinal[0]);
-                result.min.push(winnersFinal[1]);
-                result.max.push(winnersFinal[2]);
-                result.max.push(winnersFinal[3]);
-                return result;
+        if (winnersFinal.length > 3) {
+            result.min.push(winnersFinal[0]);
+            result.min.push(winnersFinal[1]);
+            result.max.push(winnersFinal[winnersFinal.length - 2]);
+            result.max.push(winnersFinal[winnersFinal.length - 1]);
+            return result;
         }
+
+        return result;
     }
 
     async getWinnersYearRange(): Promise<WinnersYearRange> {

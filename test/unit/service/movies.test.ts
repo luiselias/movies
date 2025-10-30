@@ -30,7 +30,7 @@ describe('Módulo de serviço do movies', () => {
         expect(movies).toEqual([]);
     });
 
-    it('deve retornar apenas um ganhador no intervalo entre as premiações', async () => {
+    it('deve retornar as opções vazias se houver apenas um ganhador no intervalo', async () => {
         jest.spyOn(MovieDatabase.prototype, 'getWinnersYear').mockResolvedValueOnce([
             {
                 id: 1,
@@ -53,22 +53,8 @@ describe('Módulo de serviço do movies', () => {
 
         const range = await service.getWinnersYearRange();
         expect(range).toEqual({
-            max: [
-                {
-                    followingWin: 2005,
-                    interval: 5,
-                    previousWin: 2000,
-                    producer: 'Producer 1',
-                },
-            ],
-            min: [
-                {
-                    followingWin: 2005,
-                    interval: 5,
-                    previousWin: 2000,
-                    producer: 'Producer 1',
-                },
-            ]
+            max: [],
+            min: []
         });
     });
 
@@ -100,7 +86,7 @@ describe('Módulo de serviço do movies', () => {
         });
     });
 
-    it('deve retornar dois ganhadores no intervalo entre as premiações', async () => {
+    it('não deve retornar dois ganhadores no intervalo entre as premiações, mas apenas uma vez cada 1', async () => {
         jest.spyOn(MovieDatabase.prototype, 'getWinnersYear').mockResolvedValueOnce([
             {
                 id: 1,
@@ -139,26 +125,12 @@ describe('Módulo de serviço do movies', () => {
 
         const range = await service.getWinnersYearRange();
         expect(range).toEqual({
-            max: [
-                {
-                    followingWin: 2006,
-                    interval: 5,
-                    previousWin: 2001,
-                    producer: 'Producer 2',
-                },
-            ],
-            min: [
-                {
-                    followingWin: 2005,
-                    interval: 5,
-                    previousWin: 2000,
-                    producer: 'Producer 1',
-                },
-            ]
+            max: [],
+            min: [],
         });
     });
 
-    it('deve retornar três ganhadores no intervalo entre as premiações', async () => {
+    it('não deve retornar se for apenas três ganhadores no intervalo entre as premiações', async () => {
         jest.spyOn(MovieDatabase.prototype, 'getWinnersYear').mockResolvedValueOnce([
             {
                 id: 1,
@@ -213,14 +185,98 @@ describe('Módulo de serviço do movies', () => {
 
         const range = await service.getWinnersYearRange();
         expect(range).toEqual({
-            max: [
-                {
-                    followingWin: 2010,
-                    interval: 10,
-                    previousWin: 2000,
-                    producer: 'Producer 3',
-                },
-            ],
+            max: [],
+            min: [],
+        });
+    });
+
+    it('deve retornar vários ganhadores no intervalo entre as premiações', async () => {
+        jest.spyOn(MovieDatabase.prototype, 'getWinnersYear').mockResolvedValueOnce([
+            {
+                id: 1,
+                year: 2000,
+                title: 'Movie 1',
+                studios: 'Studio 1',
+                producers: 'Producer 1',
+                winner: true,
+            },
+            {
+                id: 2,
+                year: 2005,
+                title: 'Movie 2',
+                studios: 'Studio 10',
+                producers: 'Producer 1',
+                winner: true,
+            },
+            {
+                id: 5,
+                year: 2000,
+                title: 'Movie EE',
+                studios: 'Studio 1',
+                producers: 'Producer 3',
+                winner: true,
+            },
+            {
+                id: 6,
+                year: 2010,
+                title: 'Movie FF',
+                studios: 'Studio 10',
+                producers: 'Producer 3',
+                winner: true,
+            },
+            {
+                id: 3,
+                year: 2001,
+                title: 'Movie A',
+                studios: 'Studio 1',
+                producers: 'Producer 2',
+                winner: true,
+            },
+            {
+                id: 4,
+                year: 2006,
+                title: 'Movie B',
+                studios: 'Studio 10',
+                producers: 'Producer 2',
+                winner: true,
+            },
+            {
+                id: 7,
+                year: 2000,
+                title: 'Movie EE1',
+                studios: 'Studio 1',
+                producers: 'Producer 4',
+                winner: true,
+            },
+            {
+                id: 8,
+                year: 2020,
+                title: 'Movie FF1',
+                studios: 'Studio 10',
+                producers: 'Producer 4',
+                winner: true,
+            },
+            {
+                id: 9,
+                year: 2000,
+                title: 'Movie EE2',
+                studios: 'Studio 1',
+                producers: 'Producer 5',
+                winner: true,
+            },
+            {
+                id: 10,
+                year: 2025,
+                title: 'Movie FF2',
+                studios: 'Studio 10',
+                producers: 'Producer 5',
+                winner: true,
+            },
+        ]);
+        const service = new MoviesService();
+
+        const range = await service.getWinnersYearRange();
+        expect(range).toEqual({
             min: [
                 {
                     followingWin: 2005,
@@ -233,6 +289,20 @@ describe('Módulo de serviço do movies', () => {
                     interval: 5,
                     previousWin: 2001,
                     producer: 'Producer 2',
+                },
+            ],
+            max: [
+                {
+                    followingWin: 2020,
+                    interval: 20,
+                    previousWin: 2000,
+                    producer: 'Producer 4',
+                },
+                {
+                    followingWin: 2025,
+                    interval: 25,
+                    previousWin: 2000,
+                    producer: 'Producer 5',
                 },
             ],
         });

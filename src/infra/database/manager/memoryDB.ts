@@ -23,7 +23,7 @@ class MemoryDB implements DatabaseManager {
         const lines = csv.split('\n');
         const columns = lines[0].split(';');
 
-        const createTableQuery = `CREATE TABLE movies (${columns.map((col: string) => `${col.trim()} TEXT`).join(', ')})`;
+        const createTableQuery = `CREATE TABLE movies (id INTEGER PRIMARY KEY AUTOINCREMENT, ${columns.map((col: string) => `${col.trim()} TEXT`).join(', ')})`;
 
         this.dbClient.exec(createTableQuery);
 

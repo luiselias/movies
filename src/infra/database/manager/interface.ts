@@ -1,11 +1,12 @@
-import { Movie } from "../../../types/index";
-
-export interface DatabaseClient {
-    find(query: string): Promise<Movie[]>;
-}
+import { Database } from "better-sqlite3";
 
 export interface DatabaseManager {
     connect(): Promise<void>;
     disconnect(): Promise<void>;
-    getDbClient(): DatabaseClient;
+    getDbClient(): Database;
+}
+
+export interface DatabaseManagerFactory {
+    getInstance(): DatabaseManager;
+
 }

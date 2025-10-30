@@ -1,4 +1,4 @@
-import { Movie, WinnersYearRange } from "../../types/index";
+import { Movie, WinnersYearRange } from '../../types/index';
 
 export interface MovieService {
     getAllMovies(): Promise<Movie[]>;
@@ -9,5 +9,4 @@ export interface MovieService {
 export interface MoviePersistence {
     getAllMovies(): Promise<Movie[]>;
     getWinnersYear(): Promise<Movie[]>;
-    getWinnersYearRange(): Promise<WinnersYearRange>;
 }

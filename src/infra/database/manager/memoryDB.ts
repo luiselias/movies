@@ -1,25 +1,65 @@
-import type { DatabaseClient, DatabaseManager } from './interface';
+import type { DatabaseManager } from './interface.js';
+
+import fs from 'fs';
+import path from 'path';
+import DatabaseSQL, { Database } from 'better-sqlite3';
 
 class MemoryDB implements DatabaseManager {
-    private dbClient: DatabaseClient;
+    private dbClient: Database;
+    static isLoaded: boolean = false;
 
     constructor() {
-        this.dbClient = {
-            find: async (query: string) => {
-                return [];
-            },
-        };
+        this.dbClient = new DatabaseSQL(':memory:');;
+    }
+
+    async loadData() {
+        if (MemoryDB.isLoaded) {
+            return;
+        }
+
+        const projectRoot = process.cwd();
+        const csvPath = path.join(projectRoot, 'src/infra/initial-data/Movielist.csv');
+        const csv = fs.readFileSync(csvPath, 'utf-8');
+        const lines = csv.split('\n');
+        const columns = lines[0].split(';');
+
+        const createTableQuery = `CREATE TABLE movies (${columns.map((col: string) =>
+            `${col.trim()} TEXT`).join(', ')})`;
+
+        this.dbClient.exec(createTableQuery);
+
+
+        const insertQuery = `INSERT INTO movies (${columns.map((col: string) =>
+            col.trim()).join(', ')}) VALUES (${columns.map(() => '?').join(', ')});`;
+
+        const insertStmt = this.dbClient.prepare(insertQuery);
+
+        for (let i = 1; i < lines.length; i++) {
+            const values = lines[i].split(';').map((value: string) => value.trim());
+            if (values.length === columns.length) {
+                insertStmt.run(values);
+            }
+        }
+
+        MemoryDB.isLoaded = true;
+
+        const countQuery = `SELECT COUNT(*) as count FROM movies;`;
+        const row = this.dbClient.prepare(countQuery).get() as { count: number };
+        console.log(`Loaded ${row.count} records into MemoryDB`);
     }
 
     async connect(): Promise<void> {
-        console.log('Connected to MemoryDB');
+        await this.loadData();
     }
 
     async disconnect(): Promise<void> {
-        console.log('Disconnected from MemoryDB');
+        this.dbClient.close();
     }
 
-    getDbClient(): any {
+    getDbClient(): Database {
+        if (!MemoryDB.isLoaded) {
+            throw new Error('Database not loaded. Call connect() first.');
+        }
         return this.dbClient;
     }
 }

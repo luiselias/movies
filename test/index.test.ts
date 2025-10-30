@@ -1,5 +1,10 @@
 import request from 'supertest';
-import app, {closeServer} from '../index';
+import app, { closeServer } from '../index';
+
+/*
+Por se tratar de um teste de integração com um banco de dados em memória, não estou mockando 
+as chamadas ao banco de dados na maioria dos testes.
+*/
 
 describe('Aplicação de filmes', () => {
 	const resetScenario = () => {
@@ -24,22 +29,16 @@ describe('Aplicação de filmes', () => {
 		const response = await request(app).get('/api/v1/movies');
 
 		expect(response.status).toBe(200);
-		expect(response.body).toEqual({
-			count: 0,
-			data: [],
-			success: true
-		});
+		expect(response.body.success).toBe(true);
+		expect(response.body.data.length).toBe(206);
 	});
 
 	it('deve retornar a lista de filmes ganhadores por ano', async () => {
 		const response = await request(app).get('/api/v1/movies/winners');
 
 		expect(response.status).toBe(200);
-		expect(response.body).toEqual({
-			count: 0,
-			data: [],
-			success: true
-		});
+		expect(response.body.success).toBe(true);
+		expect(response.body.data.length).toBe(42);
 	});
 
 	it('deve retornar a lista de filmes ganhadores em intervalo de máximo e minímo', async () => {
@@ -47,32 +46,32 @@ describe('Aplicação de filmes', () => {
 
 		expect(response.status).toBe(200);
 		expect(response.body).toEqual({
-			"min": [
+			min: [
 				{
-					"producer": "Producer 1",
-					"interval": 1,
-					"previousWin": 2008,
-					"followingWin": 2009
+					producer: 'Joel Silver',
+					interval: 1,
+					previousWin: 1990,
+					followingWin: 1991
 				},
 				{
-					"producer": "Producer 2",
-					"interval": 1,
-					"previousWin": 2018,
-					"followingWin": 2019
+					producer: 'Bo Derek',
+					interval: 6,
+					previousWin: 1984,
+					followingWin: 1990
 				}
 			],
-			"max": [
+			max: [
 				{
-					"producer": "Producer 1",
-					"interval": 99,
-					"previousWin": 1900,
-					"followingWin": 1999
+					producer: 'Buzz Feitshans',
+					interval: 9,
+					previousWin: 1985,
+					followingWin: 1994
 				},
 				{
-					"producer": "Producer 2",
-					"interval": 99,
-					"previousWin": 2000,
-					"followingWin": 2099
+					producer: 'Matthew Vaughn',
+					interval: 13,
+					previousWin: 2002,
+					followingWin: 2015
 				}
 			]
 		});

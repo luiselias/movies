@@ -3,7 +3,10 @@ export default {
   extensionsToTreatAsEsm: ['.ts'],
   transform: {
     '^.+\\.(ts|tsx)$': ['ts-jest', {
-      useESM: true
+      useESM: true,
+      tsconfig: {
+        module: 'es2022'
+      }
     }]
   },
   testEnvironment: 'node',

@@ -1,19 +1,27 @@
-import type { DatabaseManager } from "./interface";
+import type { DatabaseManager } from './interface.js';
 
-import { MemoryDB } from "./memoryDB";
+import { MemoryDB } from './memoryDB.js';
 
 class DatabaseManagerFactory {
+      private static instance: DatabaseManager;
+
     private static getTypeDatabase(): string {
-        return 'memoryDB'; 
+        return 'memoryDB';
     }
-    static create(): DatabaseManager {
-        const typeDB = DatabaseManagerFactory.getTypeDatabase();
-        switch (typeDB) {
-            case 'memoryDB':
-                return new MemoryDB();
-            default:
-                throw new Error(`Database type ${typeDB} not supported.`);
+
+    static getInstance(): DatabaseManager {
+        if (!DatabaseManagerFactory.instance) {
+            const typeDB = DatabaseManagerFactory.getTypeDatabase();
+            switch (typeDB) {
+                case 'memoryDB':
+                    DatabaseManagerFactory.instance = new MemoryDB();
+                    break;
+                default:
+                    throw new Error(`Database type ${typeDB} not supported.`);
+            }
         }
+
+        return DatabaseManagerFactory.instance;
     }
 }
-export { DatabaseManagerFactory };
+export default DatabaseManagerFactory;

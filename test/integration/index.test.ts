@@ -1,5 +1,5 @@
 import request from 'supertest';
-import app, { closeServer } from '../index';
+import app, { closeServer } from '../../index';
 
 /*
 Por se tratar de um teste de integração com um banco de dados em memória, não estou mockando 

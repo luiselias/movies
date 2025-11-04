@@ -30,6 +30,19 @@ yarn build
 yarn start
 ```
 
+Executar testes:
+```bash
+#executar todos os testes
+yarn test
+
+#para verificar cobertura
+yarn test --coverage
+
+#executar apenas testes de integração
+yarn test test/integration
+
+```
+
 ## Acessado as urls
 Via curl
 

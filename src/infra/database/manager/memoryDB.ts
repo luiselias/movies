@@ -35,10 +35,23 @@ class MemoryDB implements DatabaseManager {
         for (let i = 1; i < lines.length; i++) {
             const values = lines[i].split(';').map((value: string) => value.trim());
             if (values.length === columns.length) {
-                insertStmt.run(values);
+                const producers = values[3].split(',')
+                    .map(p => p.trim())
+                    .map(p => p.split('and').map(n => n.trim()))
+                    .flat();
+
+                producers.forEach(producer => {
+
+                    if (producer === '') {
+                        return;
+                    }
+
+                    const newValues = [...values];
+                    newValues[3] = producer;
+                    insertStmt.run(newValues);
+                });
             }
         }
-
         MemoryDB.isLoaded = true;
     }
 

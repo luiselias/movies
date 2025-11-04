@@ -30,7 +30,7 @@ describe('Aplicação de filmes', () => {
 
 		expect(response.status).toBe(200);
 		expect(response.body.success).toBe(true);
-		expect(response.body.data.length).toBe(206);
+		expect(response.body.data.length).toBe(490);
 	});
 
 	it('deve retornar a lista de filmes ganhadores por ano', async () => {
@@ -38,7 +38,7 @@ describe('Aplicação de filmes', () => {
 
 		expect(response.status).toBe(200);
 		expect(response.body.success).toBe(true);
-		expect(response.body.data.length).toBe(42);
+		expect(response.body.data.length).toBe(100);
 	});
 
 	it('deve retornar a lista de filmes ganhadores em intervalo de máximo e minímo', async () => {

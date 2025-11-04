@@ -23,3 +23,10 @@ export interface WinnersYearRange {
 		followingWin: number;
 	}[];
 }
+
+export interface WinnersYearRangeDB {
+	producer: string;
+	interval: number;
+	firstWin: number;
+	nextWin: number;
+}
